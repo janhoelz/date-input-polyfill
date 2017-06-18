@@ -217,7 +217,7 @@ class Picker {
 
     this.today.textContent = this.locale.today || `Today`;
 
-    this.dayOffset = this.locale.dayOffset;
+    this.dayOffset = this.locale.dayOffset || 0;
 
     const daysHeadHTML = [`<tr>`];
     for(let i = 0, len = this.locale.days.length; i < len; ++i) {
