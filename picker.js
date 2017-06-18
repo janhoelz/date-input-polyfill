@@ -217,6 +217,8 @@ class Picker {
 
     this.today.textContent = this.locale.today || `Today`;
 
+    this.dayOffset = this.locale.dayOffset;
+
     const daysHeadHTML = [`<tr>`];
     for(let i = 0, len = this.locale.days.length; i < len; ++i) {
       daysHeadHTML.push(`<th scope="col">${this.locale.days[i]}</th>`);
@@ -238,7 +240,7 @@ class Picker {
     // as well as on which weekdays they lie.
     const year = this.date.getFullYear(); // Get the year (2016).
     const month = this.date.getMonth(); // Get the month number (0-11).
-    const startDay = new Date(year, month, 1).getDay(); // First weekday of month (0-6).
+    const startDay = new Date(year, month, 1).getDay() + this.dayOffset; // First weekday of month (0-6).
     const maxDays = new Date(
       this.date.getFullYear(),
       month + 1,
@@ -274,7 +276,7 @@ class Picker {
 
       // Populate day number.
       const dayNum = i + 1 - startDay;
-      const selected = selMatrix && selDate.getDate() === dayNum;
+      const selected = selMatrix && selDate.getDate() === dayNum + this.dayOffset;
 
       matrixHTML.push(
         `<td data-day ${selected ? `data-selected` : ``}>
