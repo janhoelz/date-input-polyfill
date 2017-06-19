@@ -132,17 +132,26 @@ export default class Input {
 
     const pad = n => (n<10 ? '0'+n : n)
 
-    let formattedDate = this.format.replace(/(yyyy|dd|mm)/g, part => {
+    let formattedDate = this.format.replace(/(yyyy|yy|dd|d|mm|m)/g, part => {
 
       switch(part) {
         case 'yyyy':
           return date.getFullYear();
           break;
+        case 'yy':
+          return date.getFullYear() - 2000;
+          break;
+        case 'm':
+          return date.getMonth() + 1;
+          break;
         case 'mm':
           return pad(date.getMonth() + 1);
           break;
-        case 'dd':
+        case 'd':
           return date.getDate() + 1;
+          break;
+        case 'dd':
+          return pad(date.getDate() + 1);
           break;
       }
     });
