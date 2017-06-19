@@ -148,10 +148,10 @@ export default class Input {
           return pad(date.getMonth() + 1);
           break;
         case 'd':
-          return date.getDate() + 1;
+          return date.getDate();
           break;
         case 'dd':
-          return pad(date.getDate() + 1);
+          return pad(date.getDate());
           break;
       }
     });
