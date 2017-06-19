@@ -18,6 +18,13 @@ export default class Input {
       || document.body.getAttribute(`data-date-format`)
       || `yyyy-mm-dd`;
 
+    this.element.value
+      && (this.element.getAttribute('date-format')
+        || document.body.getAttribute('date-format')
+        || this.element.getAttribute(`data-date-format`)
+        || document.body.getAttribute(`data-date-format`))
+      && this.setLocaleValue();
+
     this.localeText = this.getLocaleText();
 
     Object.defineProperties(
@@ -32,7 +39,7 @@ export default class Input {
             const parts = this.element.value.match(/(\d+)/g);
             let i = 0, fmt = {};
 
-            format.replace(/(yyyy|dd|mm)/g, part=> {
+            format.replace(/(yyyy|dd|mm)/g, part => {
               fmt[part] = i++;
             });
             return new Date(parts[fmt['yyyy']], parts[fmt['mm']]-1, parts[fmt['dd']]);
@@ -46,10 +53,12 @@ export default class Input {
             if(!this.element.value) {
               return NaN;
             }
+            console.log('get valueAsNumber')
 
             return this.element.valueAsDate.valueOf();
           },
           set: val=> {
+            console.log('set valueAsNumber')
             this.element.valueAsDate = new Date(val);
           }
         }
@@ -115,6 +124,30 @@ export default class Input {
         return locales[localeSet];
       }
     }
+  }
+
+  setLocaleValue() {
+
+    const date = new Date(this.element.value)
+
+    const pad = n => (n<10 ? '0'+n : n)
+
+    let formattedDate = this.format.replace(/(yyyy|dd|mm)/g, part => {
+
+      switch(part) {
+        case 'yyyy':
+          return date.getFullYear();
+          break;
+        case 'mm':
+          return pad(date.getMonth() + 1);
+          break;
+        case 'dd':
+          return date.getDate() + 1;
+          break;
+      }
+    });
+
+    this.element.value = formattedDate;
   }
 
   // Return false if the browser does not support input[type="date"].
