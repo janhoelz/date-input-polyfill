@@ -6,7 +6,7 @@ export default class Input {
   constructor(input) {
     this.element = input;
     // create wrapper container
-    var wrapper = document.createElement('span');
+    var wrapper = document.createElement('div');
     wrapper.setAttribute('date-input-wrapper', true);
     // insert wrapper before el in the DOM treet
     input.parentNode.insertBefore(wrapper, this.element);
