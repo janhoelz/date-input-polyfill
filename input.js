@@ -5,6 +5,13 @@ import dateFormat from './dateformat.js';
 export default class Input {
   constructor(input) {
     this.element = input;
+    // create wrapper container
+    var wrapper = document.createElement('span');
+    wrapper.setAttribute('date-input-wrapper', true);
+    // insert wrapper before el in the DOM treet
+    input.parentNode.insertBefore(wrapper, this.element);
+    // move el into wrapper
+    wrapper.appendChild(this.element);
     this.element.setAttribute(`data-has-picker`, ``);
 
     this.locale =
