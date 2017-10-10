@@ -14,6 +14,15 @@ export default class Input {
     wrapper.appendChild(this.element);
     this.element.setAttribute(`data-has-picker`, ``);
 
+    if (this.element.hasAttribute('name')) {
+      var name = this.element.getAttribute('name');
+      this.hiddenInput = document.createElement('input');
+      this.hiddenInput.setAttribute('name', name);
+      this.element.removeAttribute('name');
+      this.hiddenInput.style.display = 'none';
+      wrapper.appendChild(this.hiddenInput);
+    }
+
     this.locale =
       this.element.getAttribute(`lang`)
       || document.body.getAttribute(`lang`)
@@ -52,6 +61,9 @@ export default class Input {
             return new Date(parts[fmt['yyyy']], parts[fmt['mm']]-1, parts[fmt['dd']]);
           },
           set: val => {
+            if (this.hiddenInput) {
+              this.hiddenInput.value = dateFormat(val, 'yyyy-mm-dd');
+            }
             this.element.value = dateFormat(val, this.format);
           }
         },
@@ -60,12 +72,9 @@ export default class Input {
             if(!this.element.value) {
               return NaN;
             }
-            console.log('get valueAsNumber')
-
             return this.element.valueAsDate.valueOf();
           },
           set: val=> {
-            console.log('set valueAsNumber')
             this.element.valueAsDate = new Date(val);
           }
         }
@@ -163,6 +172,9 @@ export default class Input {
       }
     });
 
+    if (this.hiddenInput) {
+      this.hiddenInput.value = this.element.value;
+    }
     this.element.value = formattedDate;
   }
 
